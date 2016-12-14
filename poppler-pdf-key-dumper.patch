@@ -1,0 +1,50 @@
+diff --git a/poppler/SecurityHandler.cc b/poppler/SecurityHandler.cc
+index 9e0546e..61c0ace 100644
+--- a/poppler/SecurityHandler.cc
++++ b/poppler/SecurityHandler.cc
+@@ -40,6 +40,7 @@
+ #include "SecurityHandler.h"
+ 
+ #include <limits.h>
++#include <stdio.h>
+ 
+ //------------------------------------------------------------------------
+ // SecurityHandler
+@@ -184,6 +185,7 @@ StandardSecurityHandler::StandardSecurityHandler(PDFDoc *docA,
+       userKeyObj.isString()) {
+     encVersion = versionObj.getInt();
+     encRevision = revisionObj.getInt();
++    printf("$pdf$%d*%d*", encVersion, encRevision);
+     if ((encRevision <= 4 &&
+ 	 ownerKeyObj.getString()->getLength() == 32 &&
+ 	 userKeyObj.getString()->getLength() == 32) ||
+@@ -304,6 +306,29 @@ StandardSecurityHandler::StandardSecurityHandler(PDFDoc *docA,
+ 	      "Unsupported version/revision ({0:d}/{1:d}) of Standard security handler",
+ 	      encVersion, encRevision);
+       }
++      printf("%d*%d*%d*%d*", fileKeyLength*8, permFlags, encryptMetadata ? 1 : 0, fileID->getLength());
++      for (int i = 0; i < fileID->getLength(); i++) {
++        printf("%02x", fileID->getChar(i) & 0xff);
++      }
++      printf("*%d*", userKey->getLength());
++      for (int i = 0; i < userKey->getLength(); i++) {
++        printf("%02x", userKey->getChar(i) & 0xff);
++      }
++      printf("*%d*", ownerKey->getLength());
++      for (int i = 0; i < ownerKey->getLength(); i++) {
++        printf("%02x", ownerKey->getChar(i) & 0xff);
++      }
++      if (ownerEncObj.isString() && userEncObj.isString()) {
++        printf("*%d*", userEnc->getLength());
++        for (int i = 0; i < userEnc->getLength(); i++) {
++          printf("%02x", userEnc->getChar(i) & 0xff);
++        }
++        printf("*%d*", ownerEnc->getLength());
++        for (int i = 0; i < ownerEnc->getLength(); i++) {
++          printf("%02x", ownerEnc->getChar(i) & 0xff);
++        }
++      }
++      printf("\n");
+     } else {
+       error(errSyntaxError, -1, "Invalid encryption key length");
+     }
