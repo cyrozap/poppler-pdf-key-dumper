@@ -15,7 +15,7 @@ the patch, and build poppler.
 git clone --recursive https://github.com/cyrozap/poppler-pdf-key-dumper.git
 cd poppler-pdf-key-dumper
 cd poppler
-patch -p1 << ../poppler-pdf-key-dumper.patch
+patch -p1 < ../poppler-pdf-key-dumper.patch
 ./autogen.sh
 make
 ```
