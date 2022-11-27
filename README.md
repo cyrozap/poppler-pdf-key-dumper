@@ -16,7 +16,9 @@ git clone --recursive https://github.com/cyrozap/poppler-pdf-key-dumper.git
 cd poppler-pdf-key-dumper
 cd poppler
 patch -p1 < ../poppler-pdf-key-dumper.patch
-./autogen.sh
+mkdir build
+cd build
+cmake ..
 make
 ```
 
@@ -26,7 +28,7 @@ To get the hash line for a file, simply run the `pdfinfo` utility on the file
 and grep the output for "$pdf$". For instance:
 
 ```bash
-./poppler/utils/pdfinfo encrypted.pdf | grep '\$pdf\$'
+./poppler/build/utils/pdfinfo encrypted.pdf 2>/dev/null | grep '\$pdf\$'
 ```
 
 The output should look something like this:
