@@ -19,7 +19,7 @@ patch -p1 < ../poppler-pdf-key-dumper.patch
 mkdir build
 cd build
 cmake ..
-make
+make pdfinfo
 ```
 
 ## Usage
